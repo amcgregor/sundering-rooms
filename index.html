@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<title>Room Architect for Sundering Shadows</title>
+
+<style>
+	*, ::before, ::after {
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+		font: inherit;
+		line-height: 1;
+	}
+	
+	body {
+		font-family: "Open Sans", sans-serif;
+		color: #888;
+		background: #eee;
+		font-size: 17px;
+	}
+	
+	a {
+		color: #666;
+		text-decoration: none;
+	}
+	
+	code, dd::before, dt::before, input, label, pre {
+		font-family: "Hasklug Nerd Font Mono", "Hasklug NF", "Hasklug Nerd Font", Hasklig, Monofur, monospace;
+		tab-size: 4;
+		font-size: inherit;
+		line-height: inherit;
+		padding: 0;
+		margin: 0;
+	}
+
+	strong { font-weight: bold; }
+	em { font-style: italic; }
+
+	h2 { font-size: 24px; }
+	* + p { margin-top: 10px; }
+	
+	input, textarea { vertical-align: middle; }
+	:popover-open {
+		position: relative !important;
+		inset: unset;
+		margin: 0;
+		border: none;
+		width: fit-content;
+		height: fit-content;
+		max-width: 300px;
+		box-sizing: border-box;
+		padding: 10px;
+	}
+	
+	#clipboard {
+		opacity: 0;
+		position: absolute;
+		top: 0; right: 0;
+		width: 0; height: 0;
+	}
+
+
+	article {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		
+		> dl {
+			flex: 1;
+			overflow: auto;
+			padding: 10px;
+			
+			dt {
+				display: block;
+				position: relative;
+				padding: 10px;
+				cursor: pointer;
+			}
+			
+			details summary {
+				&::marker, &::-webkit-details-marker { display: none; }
+			}
+		}
+	}
+
+
+#area label {
+	flex: 0 1;
+	padding: 10px;
+	min-width: 5em;
+	text-align: right;
+}
+
+#area dd {
+	flex: 1;
+	background: transparent;
+	padding: 10px;
+	color: inherit;
+	border: none;
+	border-bottom: 2px solid transparent;
+	position: relative;
+}
+
+#area dt:first-child::before {
+	padding-top: 3px;
+}
+
+#area input:focus {
+	outline: none;
+	border: 0px solid ActiveBorder;
+	border-bottom-width: 2px;
+	color: #ddd;
+}
+
+#area input::placeholder {
+	color: rgba(127,127,127,0.5);
+}
+
+footer {
+	background-color: white;
+	box-shadow: 0 -5px 15px -10px rgba(0,0,0,0.5);
+	line-height: 1;
+	display: flex;
+}
+
+footer button, footer select {
+	appearance: none;
+	-webkit-appearance: none;
+	display: inline-block;
+	border: none;
+	background: transparent;
+	border-radius: 0;
+	font: var(--font) !important;
+	margin: 0;
+	padding: 15px;
+	vertical-align: top;
+	height: 3em;
+	color: inherit;
+}
+
+footer button:hover, footer select:hover,
+footer button:focus, footer select:focus {
+	background: rgba(0,0,0,0.125);
+	color: black;
+	outline: none;
+}
+
+footer select {
+	flex: 1;
+}
+
+footer :disabled {
+	opacity: 0.25;
+	cursor: not-allowed;
+	filter: saturate(0%);
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		color: #aaa;
+		background: #111;
+	}
+	
+	a {
+		color: #999;
+	}
+	
+	pre {
+		color: #999;
+		border-color: #333;
+	}
+	
+	#area dt.error {
+		background-color: #300;
+		color: #ddd;
+	}
+	
+	#area dt.error {
+		background-color: #400;
+		color: #999;
+	}
+	
+	#area dt.error + * {
+		background-color: #200;
+		color: #ddd;
+	}
+	
+	footer {
+		background: black;
+		color: white;
+		box-shadow: 0 -5px 15px -10px rgba(0,0,0,0.5);
+	}
+	
+	footer button:hover, footer select:hover,
+	footer button:focus, footer select:focus {
+		background: rgba(255,255,255,0.5);
+		color: black;
+	}
+}
+</style>
+
+<article>
+	<dl>
+		<details open>
+			<summary><dt><h2><label>Room 0</label></h2></dt></summary>
+			<dd>
+				<h3>Minimum Required Information</h3>
+				<dl>
+					<div>
+						<dt><label for=title>Short Description</label></dt>
+						<dd><input id=title>
+							<button popovertarget=title-help popovertargetaction=toggle>⁉️</button></dd>
+						<dd id=title-help popover=auto>
+							<p>This is the name of the room as seen when <em>peering</em> through exits.
+						</dd>
+					</div>
+					<div>
+						<dt><label for=description>Long Description</label>
+						<dd><textarea id=description></textarea>
+							<button popovertarget=description-help popovertargetaction=toggle>⁉️</button></dd>
+						<dd id=description-help popover=auto>
+							<p>This is the primary description of the space. Any individual point of interest should have one to two sentences devoted to it. Any further details should be moved to a <em>look item</em>.
+							<p>If you intend to have hidden items please include a subtle indicator to give players a slight hint of its presence. <strong>Do not</strong> include actions, responses, or NPCs, as these are better suited for ambience and <em>actual</em> NPCs.
+						</dd>
+					</div>
+					<div>
+						<dt><label for=scent>Scent / Smell</label>
+						<dd><textarea id=scent maxlength=160></textarea>
+							<button popovertarget=scent-help popovertargetaction=toggle>⁉️</button></dd>
+						<dd id=scent-help popover=auto>
+							<p>This is the default smell of the area. Additional smells can be added, but should not exceed 160 characters / two lines.
+						</dd>
+					</div>
+					<div>
+						<dt><label for=listen>Listen / Sound</label>
+						<dd><textarea id=listen maxlength=160></textarea>
+							<button popovertarget=listen-help popovertargetaction=toggle>⁉️</button></dd>
+						<dd id=listen-help popover=auto>
+							<p>This is the default sound of the area. Additional sounds can be added, but should not exceed 160 characters / two lines.
+						</dd>
+					</div>
+				</dl>
+			</dd>
+			<dd>
+				<h3>Additional Details</h3>
+				<dl>
+					
+					
+					
+					<!--
+					
+					<div>
+						<dt><label for=></label></dt>
+						<dd><input id=>
+							<button popovertarget=-help popovertargetaction=toggle>⁉️</button></dd>
+						<dd id=-help popover=auto>
+							<p>
+						</dd>
+					</div>
+					<div>
+						<dt><label for=></label>
+						<dd><textarea id=></textarea>
+							<button popovertarget=-help popovertargetaction=toggle>⁉️</button></dd>
+						<dd id=-help popover=auto>
+							<p>
+						</dd>
+					</div>
+					
+					-->
+				</dl>
+			</dd>
+		</details>
+	</dl>
+	<footer>
+		<select id=books>
+			<option value=>
+			<optgroup label=Special>
+				<option value=_global>Global Workbook
+				<option value=_default>Default Workbook
+			</optgroup>
+			<optgroup id=saved label="Saved Workbooks"></optgroup>
+		</select>
+		<button id=load title="Load workbook." disabled>📤</button>
+		<button id=store title="Store workbook.">📥</button>
+		<button id=clear title="Clear workbook." disabled>🗑</button>
+	</footer>
+</article>
+
+<textarea id=clipboard></textarea>
+
+<script>
+</script>
+
