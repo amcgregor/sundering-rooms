@@ -17,12 +17,8 @@
 		font-size: 17px;
 	}
 	
-	a {
-		color: #666;
-		text-decoration: none;
-	}
 	
-	code, dd::before, dt::before, input, label, pre {
+	code, input, pre {
 		font-family: "Hasklug Nerd Font Mono", "Hasklug NF", "Hasklug Nerd Font", Hasklig, Monofur, monospace;
 		tab-size: 4;
 		font-size: inherit;
@@ -31,11 +27,22 @@
 		margin: 0;
 	}
 
+	a { color: #666; text-decoration: none; }
 	strong { font-weight: bold; }
 	em { font-style: italic; }
+	label { font-weight: bold; }
 
+	h1 { font-size: 28px; font-weight: 400; letter-spacing: -1px; small { font-weight: 100; letter-spacing: 0; } }
 	h2 { font-size: 24px; }
+	h3 { font-size: 20px; }
 	* + p { margin-top: 10px; }
+	
+	input, textarea {
+		width: 100%;
+		min-width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
 	
 	input, textarea { vertical-align: middle; }
 	:popover-open {
@@ -43,11 +50,13 @@
 		inset: unset;
 		margin: 0;
 		border: none;
-		width: fit-content;
+		width: calc(100% - 20px);
 		height: fit-content;
-		max-width: 300px;
+		/* max-width: 300px; */
 		box-sizing: border-box;
 		padding: 10px;
+		margin-right: -20px;
+		width: calc(50% - 25px);
 	}
 	
 	#clipboard {
@@ -63,15 +72,29 @@
 		flex-direction: column;
 		height: 100vh;
 		
+		header {
+			padding: 10px 15px;
+			background: black;
+		}
+		
+		footer {  }
+		
 		> dl {
 			flex: 1;
 			overflow: auto;
-			padding: 10px;
+			padding: 5px;
+			
+			details > dd {
+				float: left;
+				box-sizing: border-box;
+				width: 50%;
+				padding: 10px;
+			}
 			
 			dt {
 				display: block;
 				position: relative;
-				padding: 10px;
+				padding: 10px 0;
 				cursor: pointer;
 			}
 			
@@ -82,37 +105,6 @@
 	}
 
 
-#area label {
-	flex: 0 1;
-	padding: 10px;
-	min-width: 5em;
-	text-align: right;
-}
-
-#area dd {
-	flex: 1;
-	background: transparent;
-	padding: 10px;
-	color: inherit;
-	border: none;
-	border-bottom: 2px solid transparent;
-	position: relative;
-}
-
-#area dt:first-child::before {
-	padding-top: 3px;
-}
-
-#area input:focus {
-	outline: none;
-	border: 0px solid ActiveBorder;
-	border-bottom-width: 2px;
-	color: #ddd;
-}
-
-#area input::placeholder {
-	color: rgba(127,127,127,0.5);
-}
 
 footer {
 	background-color: white;
@@ -153,6 +145,14 @@ footer :disabled {
 	filter: saturate(0%);
 }
 
+button[popovertarget] {
+	appearance: none;
+	border: none;
+	background: transparent;
+	display: inline-block;
+	cursor: help;
+}
+
 @media (prefers-color-scheme: dark) {
 	body {
 		color: #aaa;
@@ -168,21 +168,6 @@ footer :disabled {
 		border-color: #333;
 	}
 	
-	#area dt.error {
-		background-color: #300;
-		color: #ddd;
-	}
-	
-	#area dt.error {
-		background-color: #400;
-		color: #999;
-	}
-	
-	#area dt.error + * {
-		background-color: #200;
-		color: #ddd;
-	}
-	
 	footer {
 		background: black;
 		color: white;
@@ -195,58 +180,89 @@ footer :disabled {
 		color: black;
 	}
 }
+
 </style>
 
+
 <article>
+	<header>
+		<h1>Sundering Shadows <small>Room Designer</small></h1>
+	</header>
+	
 	<dl>
 		<details open>
-			<summary><dt><h2><label>Room 0</label></h2></dt></summary>
+			<summary><dt><h2>Room 0</h2></dt></summary>
 			<dd>
 				<h3>Minimum Required Information</h3>
 				<dl>
 					<div>
-						<dt><label for=title>Short Description</label></dt>
+						<dt><label for=title>Short Description</label>
+							<button popovertarget=title-help popovertargetaction=toggle>⁉️</button></dt>
 						<dd><input id=title>
-							<button popovertarget=title-help popovertargetaction=toggle>⁉️</button></dd>
-						<dd id=title-help popover=auto>
-							<p>This is the name of the room as seen when <em>peering</em> through exits.
-						</dd>
+						<dd id=title-help popover>
+							<p>
+								This is the name of the room as seen when <em>peering</em> through exits.
 					</div>
 					<div>
 						<dt><label for=description>Long Description</label>
-						<dd><textarea id=description></textarea>
-							<button popovertarget=description-help popovertargetaction=toggle>⁉️</button></dd>
-						<dd id=description-help popover=auto>
-							<p>This is the primary description of the space. Any individual point of interest should have one to two sentences devoted to it. Any further details should be moved to a <em>look item</em>.
-							<p>If you intend to have hidden items please include a subtle indicator to give players a slight hint of its presence. <strong>Do not</strong> include actions, responses, or NPCs, as these are better suited for ambience and <em>actual</em> NPCs.
-						</dd>
+							<button popovertarget=description-help popovertargetaction=toggle>⁉️</button>
+						<dd><textarea id=description rows=5></textarea>
+						<dd id=description-help popover>
+							<p>
+								This is the primary description of the space. Any individual point of interest should have one to two sentences devoted to it. Any further details should be moved to a <em>look item</em>.
+							<p>
+								If you intend to have hidden items please include a subtle indicator to give players a slight hint of its presence. <strong>Do not</strong> include actions, responses, or NPCs, as these are better suited for ambience and <em>actual</em> NPCs.
 					</div>
 					<div>
-						<dt><label for=scent>Scent / Smell</label>
-						<dd><textarea id=scent maxlength=160></textarea>
-							<button popovertarget=scent-help popovertargetaction=toggle>⁉️</button></dd>
-						<dd id=scent-help popover=auto>
-							<p>This is the default smell of the area. Additional smells can be added, but should not exceed 160 characters / two lines.
-						</dd>
+						<dt><label for=scent>Smell</label>
+							<button popovertarget=scent-help popovertargetaction=toggle>⁉️</button>
+						<dd><textarea id=scent maxlength=160 rows=2></textarea>
+						<dd id=scent-help popover>
+							<p>
+								This is the default smell of the area. Additional smells can be added, but should not exceed 160 characters / two lines.
 					</div>
 					<div>
-						<dt><label for=listen>Listen / Sound</label>
-						<dd><textarea id=listen maxlength=160></textarea>
-							<button popovertarget=listen-help popovertargetaction=toggle>⁉️</button></dd>
-						<dd id=listen-help popover=auto>
-							<p>This is the default sound of the area. Additional sounds can be added, but should not exceed 160 characters / two lines.
-						</dd>
+						<dt><label for=listen>Listen</label>
+							<button popovertarget=listen-help popovertargetaction=toggle>⁉️</button>
+						<dd><textarea id=listen maxlength=160 rows=2></textarea>
+						<dd id=listen-help popover>
+							<p>
+								This is the default sound of the area. Additional sounds can be added, but should not exceed 160 characters / two lines.
 					</div>
 				</dl>
 			</dd>
 			<dd>
-				<h3>Additional Details</h3>
+				<h3>Ambiance</h3>
+			</dd>
+			<dd>
+				<h3>Look Items</h3>
+			</dd>
+			<dd>
+				<h3>Additional Smell</h3>
+			</dd>
+			<dd>
+				<h3>Additional Listen</h3>
+			</dd>
+				
+				<!--
+				[Checkboxes]
+				
+				
+				[Global]
+				Ambiance
+					Room-wide emotes that have a chance to trigger on a timer. They can be area effects such as a burbling brook or background NPCs going about their day.
+				
+				Look Items
+					Additional details about features one can directly examine. These require one or more comma-separated keywords.
+				
+				Additional Scents And Sounds
+					Rarely used, but it is possible to have additional targeted scents and sounds such as "smell rose" or "listen ocean". These require a keyword.
+				
+				[Contextual]
+				-->
+				
+				<!--
 				<dl>
-					
-					
-					
-					<!--
-					
 					<div>
 						<dt><label for=></label></dt>
 						<dd><input id=>
@@ -263,10 +279,9 @@ footer :disabled {
 							<p>
 						</dd>
 					</div>
-					
-					-->
 				</dl>
 			</dd>
+				-->
 		</details>
 	</dl>
 	<footer>
